@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <title>Quiz App</title>
+  </head>
+  <body>
+    <header id="header" class="main-header">
+      <h1 class="heading-primary">Welcome to the Quiz App!</h1>
+    </header>
+    <main id="main">
+      <!-- screen 1 : Quiz Options -->
+      <section id="screen1">
+        <h2 class="heading-secondary">Quiz Options</h2>
+        <form class="form-quiz">
+          <div class="form__group">
+            <label class="form__label" for="amount"
+              >Number of questions:
+            </label><br/>
+            <input
+              class="form__input form__input--number"
+              id="amount"
+              name="amount"
+              type="number"
+              step="1"
+              min="1"
+              max="50"
+              value="5"
+            />
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="category">Select Category: </label> <br/>
+            <select class="form__input" id="category" name="category">
+              <option value="">Any Category</option>
+            </select>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="difficulty"
+              >Select Difficulty:
+            </label><br/>
+            <select class="form__input" id="difficulty" name="difficulty">
+              <option value="">Any Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="type">Select Type: </label><br/>
+            <select class="form__input" id="type" name="type">
+              <option value="">Any Type</option>
+              <option value="multiple">Multiple Choice</option>
+              <option value="boolean">True / False</option>
+            </select>
+          </div>
+
+          <div class="form__group"></div>
+            <button class="btn btn--start-quiz" type="submit">Start Quiz</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
 </html>
