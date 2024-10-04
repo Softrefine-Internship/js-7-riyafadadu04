@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
     <title>Quiz App</title>
@@ -12,9 +15,9 @@
       <h1 class="heading-primary">Welcome to the Quiz App!</h1>
     </header>
     <main id="main">
-      <!-- screen 1 : Quiz Options -->
-      <section id="screen1">
-        <h2 class="heading-secondary">Quiz Options</h2>
+      <!-- screen 1 : Quiz Options --> 
+      <section id="screen1" class="screen">
+        <h2 class="heading-secondary p-top-5">Quiz Options</h2>
         <form class="form-quiz">
           <div class="form__group">
             <label class="form__label" for="amount"
@@ -22,19 +25,21 @@
             </label><br/>
             <input
               class="form__input form__input--number"
-              id="amount"
-              name="amount"
+              id="question-number"
+              name="question-number"
               type="number"
               step="1"
               min="1"
               max="50"
-              value="5"
-            />
+              value="10"
+              required
+            /><br/>
+            <p class="hidden error-message">Please enter a valid number between 1 to 50.</p>
           </div>
 
           <div class="form__group">
             <label class="form__label" for="category">Select Category: </label> <br/>
-            <select class="form__input" id="category" name="category">
+            <select class="form__input categoryOption" id="category" name="category">
               <option value="">Any Category</option>
             </select>
           </div>
@@ -65,6 +70,64 @@
           </div>
         </form>
       </section>
+
+      <!-- screen 2 : Quiz Questions -->
+      <section id="screen2" class="screen hidden">
+        <div class="questions">
+          <div class="questions__result">
+            <p id="question-left" class="result--question">Question <span class="currentQue"></span> out of <span class="totalQue"></span></p>
+            <p class="result--score">Score : <span id="score">0</span></p>
+          </div>
+          <div id="question-container" class="question__container">
+            <h3 id="question" class="container--question"></h3>
+            <div id="answers-container" class="container--answer">
+              <!-- <button class="btn btn--answer" id="answer1"></button>
+              <button class="btn btn--answer" id="answer2"></button>
+              <button class="btn btn--answer" id="answer3"></button>
+              <button class="btn btn--answer" id="answer4"></button> -->
+            </div>
+          </div>
+          <div class="btn-container">
+            <div class="btn-container--right">
+              <button class="btn btn--restart" id="quit-btn">Quit Quiz</button>
+            </div>
+            <div class="btn-container--left">
+              <button class="btn btn--next" id="next-btn">Next in <span id="timer"></span> </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3 : Quiz Results -->
+        <section id="screen3" class="screen hidden">
+          <div class="result-body">
+            <h2 class="heading-secondary">Quiz Results</h2>
+            <div class="results-container">
+              <p>Your final score is : <span id="final-score">0</span></p>
+              <button class="btn btn--restart" id="restart-btn">Play New Quiz</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- screen 4 : model popup -->
+        <section id="model-popup" class="model-popup hidden">
+          <div class="model-popup__overlay">
+            <div class="model-popup__content">
+              <div class="model-popup__close" id="cancel-btn">&times;</div>
+              <h2 class="heading-secondary model-title">Are you sure you want to quit the quiz?</h2>
+              <div class="btn-model">
+                <button class="btn btn--cancel" id="cancel-btn">No, Stay</button>
+                <button class="btn btn--confirm" id="confirm-btn">Yes, Quit</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Loading Spinner -->
+        <section class="loader-spinner hidden screen">
+          <div class="spinner"></div>
+          <p class="heading-secondary">Loading...</p>
+        </section>
     </main>
   </body>
 </html>
