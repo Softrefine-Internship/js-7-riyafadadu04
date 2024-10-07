@@ -15,17 +15,27 @@ const timer = document.querySelector('#timer');
 const restartBtn = document.querySelector('#restart-btn');
 const finalScore = document.querySelector('#final-score');
 const score = document.querySelector('#score');
+const attemptedScrore = document.querySelector('#attempted-scrore');
+const resultPer = document.querySelector('.result-per');
+const noQues = document.querySelector('.total-Questions');
+const restartQuiz = document.querySelector('#restart-quiz');
 
 const modal = document.querySelector('.model-popup__overlay');
 const cancleBtn = document.querySelector('#cancel-btn');
 const confirmBtn = document.querySelector('#confirm-btn');
 const quitBtn = document.querySelector('#quit-btn');
 const spinner = document.querySelector('.loader-spinner');
+const errorText = document.querySelector('.model-title');
+const errorTextBtn = document.querySelectorAll('.error-text-btn');
+
+const viewallBtn = document.querySelector('#view-all-btn');
+const backBtn = document.querySelector('#back-btn');
 
 const screen1 = document.querySelector('#screen1');
 const screen2 = document.querySelector('#screen2');
 const screen3 = document.querySelector('#screen3');
 const screen4 = document.querySelector('#model-popup');
+const screen5 = document.querySelector('#screen5');
 
 class Quiz {
   #questions = [];
@@ -34,6 +44,7 @@ class Quiz {
   #score = 0;
   #countdown = 30; // seconds
   #interval;
+  #attemptedCount = 0;
 
   constructor() {
     this.#init();
@@ -43,17 +54,27 @@ class Quiz {
     this.#getCategory();
     btnStartQuiz.addEventListener('click', this.#startQuiz.bind(this));
     nextBtn.addEventListener('click', this.#nextQuestion.bind(this));
-    [restartBtn, confirmBtn].forEach(btn =>
+    viewallBtn.addEventListener('click', this.#viewAllQue.bind(this));
+    [restartBtn, confirmBtn, restartQuiz].forEach(btn =>
       btn.addEventListener('click', this.#cancelQuiz.bind(this))
     );
     quitBtn.addEventListener('click', () => {
       screen4.classList.remove('hidden');
+      errorTextBtn.forEach(btn => btn.classList.remove('hidden'));
+      this.#errorMessage('Are you sure you want to quit the quiz?');
     });
     [modal, cancleBtn].forEach(btn =>
       btn.addEventListener('click', () => {
         screen4.classList.add('hidden');
       })
     );
+    backBtn.addEventListener('click', () => {
+      screen1.classList.add('hidden');
+      screen2.classList.add('hidden');
+      screen3.classList.remove('hidden');
+      screen4.classList.add('hidden');
+      screen5.classList.add('hidden');
+    });
   }
 
   async #getCategory() {
@@ -85,6 +106,8 @@ class Quiz {
       inputAmount.classList.remove('error-border');
     }
 
+    this.#attemptedCount = 0;
+
     try {
       spinner.classList.remove('hidden');
       screen1.classList.add('hidden');
@@ -104,17 +127,22 @@ class Quiz {
       const questionData = await resQuestions.json();
 
       if (questionData.response_code === 1) {
-        alert(
+        confirmBtn.classList.remove('hidden');
+        this.#errorMessage(
           "No Results Could not return results. The API doesn't have enough questions for your query."
         );
       }
       if (questionData.response_code === 2) {
-        alert("Arguements passed in aren't valid.");
+        confirmBtn.classList.remove('hidden');
+        this.#errorMessage("Arguements passed in aren't valid.");
       }
-      if (!resQuestions.ok)
-        alert(`Error fetching questions: ${resQuestions.status}`);
+      if (!resQuestions.ok) {
+        confirmBtn.classList.remove('hidden');
+        this.#errorMessage(`Error fetching questions: ${resQuestions.status}`);
+      }
       if (questionData.response_code === 5) {
-        alert('Rate Limit Too many requests have occurred.');
+        confirmBtn.classList.remove('hidden');
+        this.#errorMessage('Rate Limit Too many requests have occurred.');
       }
 
       spinner.classList.add('hidden');
@@ -173,6 +201,7 @@ class Quiz {
 
   #answerClicked(e) {
     const selectedAnswer = e.target.textContent;
+    this.#attemptedCount++;
 
     const allButtons = answersContainer.querySelectorAll('.btn--answer');
     allButtons.forEach(btn => (btn.disabled = true));
@@ -200,7 +229,12 @@ class Quiz {
       screen1.classList.add('hidden');
       screen2.classList.add('hidden');
       screen3.classList.remove('hidden');
+      const totalQuestions = this.#questions.length;
+      noQues.textContent = totalQuestions;
       finalScore.textContent = this.#score;
+      attemptedScrore.textContent = this.#attemptedCount;
+      const persentage = (this.#score / totalQuestions) * 100;
+      resultPer.textContent = `${Math.round(persentage)}%`;
     }
   }
 
@@ -215,6 +249,35 @@ class Quiz {
     screen2.classList.add('hidden');
     screen3.classList.add('hidden');
     screen4.classList.add('hidden');
+    screen5.classList.add('hidden');
+  }
+
+  #errorMessage(message) {
+    screen4.classList.remove('hidden');
+    errorText.textContent = message;
+  }
+
+  #viewAllQue() {
+    screen3.classList.add('hidden');
+    screen5.classList.remove('hidden');
+    const questionListContainer = document.querySelector(
+      '.question-list--container'
+    );
+
+    questionListContainer.innerHTML = '';
+    this.#questions.forEach((question, index) => {
+      const li = document.createElement('li');
+      li.classList.add('question-list--item');
+      li.innerHTML = `
+        <span class="question-list--question"><span class="question-list--index">Question ${
+          index + 1
+        } : </span> ${question.question}</span> <br/>
+        <span class="question-list--answer"><span class="question-list--index">Answer ${
+          index + 1
+        } : </span> ${question.correct_answer}</span>
+      `;
+      questionListContainer.appendChild(li);
+    });
   }
 }
 

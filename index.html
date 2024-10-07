@@ -103,9 +103,25 @@
           <div class="result-body">
             <h2 class="heading-secondary">Quiz Results</h2>
             <div class="results-container">
-              <p>Your final score is : <span id="final-score">0</span></p>
+              <p>Total number of Questions : <span class="total-Questions">0</span></p>
+              <p>Your Attempted Questions : <span id="attempted-scrore">0</span></p>
+              <p>Your Correct Answers : <span id="final-score">0</span></p>
+              <p>Your Result : <span class="result-per">0%</span></p>
               <button class="btn btn--restart" id="restart-btn">Play New Quiz</button>
+              <button class="btn btn--view-all" id="view-all-btn">View Question</button>
             </div>
+          </div>
+        </section>
+
+        <!-- screen 5 : View All Questions -->
+        <section id="screen5" class="screen hidden">
+          <div class="btn-container">
+            <button class="btn btn--back" id="back-btn">Back</button>
+            <button class="btn btn--restart" id="restart-quiz">Restart Quiz</button>
+          </div>
+          <div class="question-list">
+            <h3 class="heading-secondary">Question List:</h3>
+            <ul id="question-list" class="question-list--container"></ul>
           </div>
         </section>
 
@@ -116,8 +132,8 @@
               <div class="model-popup__close" id="cancel-btn">&times;</div>
               <h2 class="heading-secondary model-title">Are you sure you want to quit the quiz?</h2>
               <div class="btn-model">
-                <button class="btn btn--cancel" id="cancel-btn">No, Stay</button>
-                <button class="btn btn--confirm" id="confirm-btn">Yes, Quit</button>
+                <button class="btn btn--cancel error-text-btn hidden" id="cancel-btn">No, Stay</button>
+                <button class="btn btn--confirm error-text-btn hidden" id="confirm-btn">Yes, Quit</button>
               </div>
             </div>
           </div>
