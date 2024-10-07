@@ -19,6 +19,7 @@ const attemptedScrore = document.querySelector('#attempted-scrore');
 const resultPer = document.querySelector('.result-per');
 const noQues = document.querySelector('.total-Questions');
 const restartQuiz = document.querySelector('#restart-quiz');
+const nextResultBtn = document.querySelector('.next-result-btn');
 
 const modal = document.querySelector('.model-popup__overlay');
 const cancleBtn = document.querySelector('#cancel-btn');
@@ -106,6 +107,8 @@ class Quiz {
       inputAmount.classList.remove('error-border');
     }
 
+    this.#score = 0;
+    score.textContent = this.#score;
     this.#attemptedCount = 0;
 
     try {
@@ -182,6 +185,12 @@ class Quiz {
       answersContainer.appendChild(btn);
     });
 
+    if (this.#currentQuestionIndex === this.#questions.length - 1) {
+      nextResultBtn.textContent = 'Result';
+    } else {
+      nextResultBtn.textContent = 'Next';
+    }
+
     this.#countdown = 30;
     clearInterval(this.#interval);
     this.#timerCounter();
@@ -218,6 +227,9 @@ class Quiz {
         }
       });
     }
+    setTimeout(() => {
+      this.#nextQuestion();
+    }, 1000);
   }
 
   #nextQuestion() {
